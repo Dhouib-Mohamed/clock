@@ -17,13 +17,11 @@ export default function Stopwatch({theme}) {
     } = useStopwatch({ autoStart: false });
 
     let stopStyle = {
-        color: theme?"#fff":"#000",
         fontSize:50,
         paddingTop:30,
         paddingStart:40,
     }
     const defaultStyle = {
-        color: theme?"#fff":"#000",
         fontSize:70,
         alignSelf:"center",
         paddingTop: 50,
@@ -39,7 +37,10 @@ export default function Stopwatch({theme}) {
             }}
         >
             <Text
-            style={defaultStyle}>
+            style={{
+                ...defaultStyle,
+                ...style.text,
+            }}>
                 {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}
             </Text>
             <View

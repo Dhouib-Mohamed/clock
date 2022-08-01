@@ -1,17 +1,11 @@
 import {Text, View} from "react-native";
-import React from 'react';
-import {default_page} from '../styles';
+import React, {useState} from 'react';
 
 export default function Timer( ) {
+
+    const [isRunning,setRunning] = useState(false)
     return (
-        <View
-            style={
-                default_page
-            }
-        >
-            <Text>
-                timer
-            </Text>
+        <View>
         </View>
     )
 }

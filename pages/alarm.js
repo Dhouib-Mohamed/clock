@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import RoundedButton from '../components/button';
 import useGlobalStyles, {default_page, Style} from '../styles';
 import SwitchButton from '../components/switch';
+import {weekDays} from '../data/days';
 
 export default function Alarm({theme}) {
     const style = useGlobalStyles()
@@ -11,9 +12,9 @@ export default function Alarm({theme}) {
             style={style.page}
         >
             <ScrollView>
-                <Content time={'07:00'} date={'hello'} state={true}/>
-                <Content time={'12:30'} date={'hello'} state={true}/>
-                <Content time={'18:00'} date={'hello'} state={true}/>
+                <Content time={'07:00'} days={[1,2,3,4,5,6]} custom={true} state={true}/>
+                <Content time={'12:30'} days={[5,1]} custom={true} state={false}/>
+                <Content time={'18:00'} days={'Daily'} state={true}/>
             </ScrollView>
             <RoundedButton theme={theme} icon={'add'} role={() => {
                 console.log('hello');
@@ -22,7 +23,7 @@ export default function Alarm({theme}) {
     );
 }
 
-const Content = ({time, date, state}) => {
+const Content = ({time, days,custom=false, state}) => {
     const [active, setActivity] = useState(state);
     const style = useGlobalStyles()
 
@@ -31,7 +32,7 @@ const Content = ({time, date, state}) => {
             style={{
                 paddingVertical: 20,
                 paddingHorizontal: 28,
-                width: Dimensions.get('screen').width,
+                width: Dimensions.get('window').width,
                 height: 90,
                 flexDirection: 'row',
                 alignContent: 'center',
@@ -47,19 +48,19 @@ const Content = ({time, date, state}) => {
                 <Text
                 style={{
                     fontSize: 30,
-                    fontWeight: "400",
+                    fontWeight: active?"400":"200",
                     ...style.text
                 }}>
                     {time}
                 </Text>
                 <Text
                     style={{
-                        fontSize: 16,
-                        fontWeight:"400",
+                        fontSize: 15,
+                        fontWeight:"200",
                         ...style.text
                     }}
-                >
-                    {date}
+                >{
+                    custom?weekDays.map((element,index)=> {return days.includes(index)? (element+" "):""}):days}
                 </Text>
             </View>
             <SwitchButton
