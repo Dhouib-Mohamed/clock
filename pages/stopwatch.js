@@ -64,7 +64,7 @@ export default function Stopwatch({theme}) {
                 {(hours==0&&minutes==0&&seconds==0)?null:
                     <RoundedButton
                     theme={theme}
-                    role={()=>{reset();pause();}}
+                    role={()=>{reset(0,false)}}
                     icon={"refresh"}
                 />}
                 <RoundedButton
