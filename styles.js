@@ -18,7 +18,7 @@ const Style =({colors})=>StyleSheet.create(
         },
         text: {
             color: colors.text,
-        }
+        },
     })
 
 function useGlobalStyles() {

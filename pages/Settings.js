@@ -1,68 +1,70 @@
-import {Button, Dimensions, Pressable, ScrollView, Text, View} from 'react-native';
-import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useTheme} from 'react-native-paper';
-import useGlobalStyles, {Style} from '../styles';
+import {Dimensions, ScrollView, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {Divider, useTheme} from 'react-native-paper';
+import {getStringValue} from '../utils/asyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Setting from '../components/setting';
 
 
 export default function Settings({theme,setTheme}) {
+    const {colors} =useTheme()
+    const [timeFormat,set_format] = useState();
+    getStringValue("time_format","24").then(r => {set_format(r)
+        console.log(r);});
+    const setFormat = async (value) => {
+        set_format(value)
+        try {
+            await AsyncStorage.setItem('time_format', value)
+        } catch (e) {
+            console.log(e.name);
+        }
+    }
     return (
-        <View>
-            <ScrollView>
+        <View
+            style={{
+                backgroundColor: colors.background,
+                height:Dimensions.get("window").height,
+                marginBottom:20,
+                marginHorizontal:30,
+                marginTop:60,
+            }}
+        >
+            <ScrollView
+                showsVerticalScrollIndicator ={false}>
+                <Title value={"theme settings"}/>
                 <Setting
                 name={"Theme"}
-                value={theme}
-                setTheme={setTheme}
+                value={theme?"Dark":"Light"}
+                role={()=>setTheme(!theme)}
                 />
+                <Divider theme={theme} bold={true}/>
+                <Title value={"clock settings"}/>
+                <Setting
+                    name={"Time Format"}
+                    value={timeFormat}
+                    role={()=>setFormat("12")}
+                />
+                <Divider theme={theme} bold={true}/>
+                <Title value={"general settings"}/>
             </ScrollView>
         </View>
     );
 }
 
-const Setting =({name,value,setTheme})=>{
-    const {colors} = useTheme();
-    const style = useGlobalStyles()
-    console.log(value)
+const Title =({value})=>{
+    const {colors} =useTheme()
     return(
-        <Pressable
+        <Text
+            style={{
 
-            onPress={()=> {
-                setTheme(!value)
-                console.log(value);
+                color:colors.disabled,
+                fontSize:13,
+                paddingBottom:7,
+                paddingTop:30,
             }}
-        style={{
-            paddingVertical: 20,
-            paddingHorizontal: 40,
-            width: Dimensions.get('screen').width,
-            height: 90,
-            flexDirection: 'row',
-            alignContent: 'center',
-            justifyContent: 'space-between',
-        }}
-    >
-            <Text
-            style={style.text}>
-                {name}
-            </Text>
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignContent: 'center',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Text
-                    style={style.text}>
-                    {value?"Dark":"Light"}
-                </Text>
-                <Ionicons
-                    name="chevron-forward-outline"
-                    size={20}
-                    color={ colors.text}
-                />
-            </View>
-
-
-    </Pressable>)
+        >
+            {value.toUpperCase()}
+        </Text>
+    )
 }
+

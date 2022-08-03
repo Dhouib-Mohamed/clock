@@ -48,8 +48,8 @@ export default function Home({theme}) {
         >
             <Tab.Screen name="Alarm" component={()=><Alarm theme={theme}/>}/>
             <Tab.Screen name="Clock" component={()=><Clock theme={theme}/>}/>
-            <Tab.Screen name="StopWatch" component={Stopwatch}/>
-            <Tab.Screen name="Timer" component={Timer}/>
+            <Tab.Screen name="StopWatch" component={()=><Stopwatch theme={theme}/>}/>
+            <Tab.Screen name="Timer" component={()=><Timer theme={theme}/>}/>
         </Tab.Navigator>
     )
 }
