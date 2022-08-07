@@ -4,16 +4,18 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Clock from "./clock";
-import Timer from "./timer";
-import Alarm from "./alarm";
-import Stopwatch from "./stopwatch";
+import Clock from "./Clock";
+import Timer from "./Timer";
+import Alarm from "./Alarm";
+import Stopwatch from "./Stopwatch";
 import {pages} from '../data/pages'
 
 export default function Home({theme}) {
-
     const Tab = createMaterialTopTabNavigator();
-
+    const AlarmScreen=()=><Alarm theme={theme}/>
+    const ClockScreen=()=><Clock theme={theme}/>
+    const StopwatchScreen=()=><Stopwatch theme={theme}/>
+    const TimerScreen=()=><Timer theme={theme}/>
     return (
         <Tab.Navigator
             initialLayout={{
@@ -31,7 +33,7 @@ export default function Home({theme}) {
                                     pages.stopwatch.icon
                     ) + (focused ? "" : "-outline");
                     return <Ionicons name={icon} size={25}
-                                     color={focused ? "brown" : theme ? `#d3d3d3` : `#2f4f4f`}/>;
+                                     color={focused ? "brown" : theme==="Dark" ? `#d3d3d3` : `#2f4f4f`}/>;
                 },
                 tabBarShowIcon: true,
                 tabBarShowLabel: false,
@@ -46,10 +48,10 @@ export default function Home({theme}) {
                 },
             })}
         >
-            <Tab.Screen name="Alarm" component={()=><Alarm theme={theme}/>}/>
-            <Tab.Screen name="Clock" component={()=><Clock theme={theme}/>}/>
-            <Tab.Screen name="StopWatch" component={()=><Stopwatch theme={theme}/>}/>
-            <Tab.Screen name="Timer" component={()=><Timer theme={theme}/>}/>
+            <Tab.Screen name="Alarm" component={AlarmScreen}/>
+            <Tab.Screen name="Clock" component={ClockScreen}/>
+            <Tab.Screen name="StopWatch" component={StopwatchScreen}/>
+            <Tab.Screen name="Timer" component={TimerScreen}/>
         </Tab.Navigator>
     )
 }

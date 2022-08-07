@@ -9,7 +9,7 @@ const Style =({colors})=>StyleSheet.create(
         },
         page: {
             backgroundColor: colors.background,
-            width: Dimensions.get('window').width,
+            width: "100%",
             flex: 1,
             flexDirection: 'column',
             alignItems: 'center',

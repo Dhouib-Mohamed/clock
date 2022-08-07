@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Menu, Provider, useTheme} from 'react-native-paper';
 import {Pressable, StatusBar, View} from 'react-native';
@@ -12,7 +12,7 @@ import darkTheme from './themes/DarkTheme';
 import defaultTheme from './themes/DefaultTheme';
 import useGlobalStyles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getValue} from './utils/asyncStorage';
+import {getStringValue, getValue} from './utils/asyncStorage';
 import AddAlarm from './pages/AddAlarm';
 import EditAlarm from './pages/EditAlarm';
 
@@ -20,23 +20,22 @@ import EditAlarm from './pages/EditAlarm';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    const [isDarkMode, set] = useState();
-    getValue("theme",true).then(r => {set(r) });
-    const setTheme = async (value) => {
-        set(value)
+    const [theme, set_theme] = useState();
+    useEffect(()=>{
+        getStringValue("theme","Dark").then(r => {if(theme!==r){set_theme(r)} });    })
+    const setTheme =async (value) => {
+        set_theme(value)
         try {
-            const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem('theme', jsonValue)
+            await AsyncStorage.setItem('theme', value)
         } catch (e) {
             console.log(e.name);
         }
     }
-
     return (
-        <Provider theme={isDarkMode ? darkTheme : defaultTheme}>
-            <NavigationContainer theme={isDarkMode ? darkTheme : defaultTheme}>
-                <StatusBar backgroundColor={isDarkMode?'rgb(42,37,37)':'rgb(242, 242, 242)'} barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-                <NavStack isDarkMode={isDarkMode} setTheme={setTheme}/>
+        <Provider theme={theme==="Dark" ? darkTheme : defaultTheme}>
+            <NavigationContainer theme={theme==="Dark" ? darkTheme : defaultTheme}>
+                <StatusBar backgroundColor={theme==="Dark"?'rgb(42,37,37)':'rgb(242, 242, 242)'} barStyle={theme==="Dark" ? 'light-content' : 'dark-content'}/>
+                <NavStack isDarkMode={theme} setTheme={setTheme}/>
             </NavigationContainer>
         </Provider>
 
@@ -45,11 +44,15 @@ export default function App() {
 
 const NavStack = ({isDarkMode, setTheme}) => {
     const {colors} = useTheme()
+    const HomeScreen =() => <Home theme={isDarkMode}/>
+    const SettingsScreen =() => <Settings theme={isDarkMode} setTheme={setTheme}/>
+    const AddAlarmScreen =() => <AddAlarm theme={isDarkMode}/>
+    const EditAlarmScreen =() => <EditAlarm theme={isDarkMode}/>
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Home"
-                component={() => <Home theme={isDarkMode}/>}
+                component={HomeScreen}
                 options={{
                     animation: 'none',
                     headerTitle: '',
@@ -67,29 +70,21 @@ const NavStack = ({isDarkMode, setTheme}) => {
                     headerTitleAlign: "center",
                     headerTransparent: true,
                 }}
-                component={() => <Settings theme={isDarkMode} setTheme={setTheme}/>}
+                component={SettingsScreen}
             />
             <Stack.Screen
                 name="AddAlarm"
                 options={{
-                    headerLeft:() => {return <Ionicons color={colors.text} name={"close"} size={30}/>},
-                    headerRight:() => {return <Ionicons color={colors.text} name={"checkmark"} size={30}/>},
-                    title:"Add alarm",
-                    headerTitleAlign: "center",
-                    headerTransparent: true,
+                    headerShown:false,
                 }}
-                component={() => <AddAlarm theme={isDarkMode}/>}
+                component={AddAlarmScreen}
             />
             <Stack.Screen
                 name="EditAlarm"
                 options={{
-                    headerLeft:() => {return <Ionicons color={colors.text} name={"close"} size={30}/>},
-                    headerRight:() => {return <Ionicons color={colors.text} name={"checkmark"} size={30}/>},
-                    title:"Edit alarm",
-                    headerTitleAlign: "center",
-                    headerTransparent: true,
+                    headerShown:false,
                 }}
-                component={() => <EditAlarm theme={isDarkMode}/>}
+                component={EditAlarmScreen}
             />
         </Stack.Navigator>
     );
@@ -100,7 +95,6 @@ const More = ({theme}) => {
     const [visible, setVisible] = useState(true);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
-    const style = useGlobalStyles()
     return (
         <View>
             <Menu
@@ -116,7 +110,7 @@ const More = ({theme}) => {
                             height: 20,
                         }}
                         onPress={openMenu}>
-                        <Ionicons name="ellipsis-vertical-outline" size={15} color={theme ? `#d3d3d3` : `#779d9d`}/>
+                        <Ionicons name="ellipsis-vertical-outline" size={15} color={theme==="Dark" ? `#d3d3d3` : `#779d9d`}/>
                     </Pressable>
                 }
             >

@@ -15,10 +15,12 @@
     "@react-navigation/material-top-tabs": "^6.2.2",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
+    "@react-navigation/routers": "^6.1.1",
     "react": "18.0.0",
     "react-async": "^10.0.1",
     "react-ionicons": "^1.4.6",
     "react-native": "0.69.3",
+    "react-native-bouncy-checkbox": "^3.0.2",
     "react-native-countdown-circle-timer": "^3.0.9",
     "react-native-pager-view": "^5.4.25",
     "react-native-paper": "^4.12.4",
@@ -28,6 +30,7 @@
     "react-native-svg": "^12.4.3",
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-wheel-picker-android": "^2.0.6",
     "react-timer-hook": "^3.0.5"
   },
   "devDependencies": {

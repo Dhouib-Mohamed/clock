@@ -1,7 +1,7 @@
 import {Dimensions, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import useGlobalStyles from '../styles';
-import RoundedButton from '../components/button';
+import RoundedButton from '../components/roundedButton';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import Picker from '../components/picker';
 
@@ -34,7 +34,7 @@ export default function Timer({theme}) {
 
     return (
         <View
-            style={{...style.page, marginTop: 80}}
+            style={{...style.page, marginTop: 40}}
         >
             {(isSet) ? (<>
                 <CircleTimer hours={hours} minutes={minutes} seconds={seconds} isRunning={isRunning} reset={reset}/>
@@ -61,10 +61,10 @@ export default function Timer({theme}) {
                     flexDirection: 'row',
                     alignContent: 'center',
                     justifyContent: 'space-between',
-                    marginTop: 50,
+                    marginTop: 20,
                     height: Dimensions.get('window').height * 0.4,
                 }}>
-                <Picker setVariable={setHours} variable={hours} length={25}/>
+                <Picker setVariable={setHours} variable={hours} length={24}/>
                 <Picker setVariable={setMinutes} variable={minutes}/>
                 <Picker setVariable={setSeconds} variable={seconds}/>
             </View>

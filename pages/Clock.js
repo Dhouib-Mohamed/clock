@@ -3,19 +3,21 @@ import React, {useEffect, useState} from 'react';
 import { useTime } from 'react-timer-hook';
 import useGlobalStyles from '../styles';
 import {getStringValue} from '../utils/asyncStorage';
+import {useTheme} from 'react-native-paper';
 
 export default function Clock({theme}) {
-    const [ time_format,setf]= useState() ;
+    const [ timeFormat,setTimeFormat]= useState() ;
     useEffect(()=>{
-        getStringValue("time_format").then(r => {setf(r);
-            console.log(r);});
-        console.log(time_format);
-    },[])
-    return time_format!==undefined?<Child theme={theme} time_format={time_format}/>:null;
+        getStringValue("time_format").then(r => {
+            if(r!==timeFormat) {
+                setTimeFormat(r)}
+        });
+    })
+    return timeFormat!==undefined?<Child theme={theme} time_format={timeFormat}/>:null;
 }
 
 function Child({theme,time_format}) {
-    const style = useGlobalStyles()
+    const {colors} =useTheme()
     const [date, setDate] = useState(null);
     useEffect(() => {
         let today = new Date();
@@ -38,20 +40,19 @@ function Child({theme,time_format}) {
         >
             <Text
             style={{
-                color: theme?"#fff":"#000",
+                color: colors.text,
                 fontSize:50,
             }}
             >
-                {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}{" "}<Text
+                {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}{" "}
+                <Text
                 style={{
-                    color: theme?"#fff":"#000",
+                    color: colors.text,
                     fontSize:32,
                 }}>{ampm.toUpperCase()}</Text>
             </Text>
             <Text
-            style={
-                style.text
-            }
+            style={{color: colors.disabled}}
             >
                 Current Date: {date}
             </Text>

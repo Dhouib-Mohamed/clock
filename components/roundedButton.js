@@ -9,7 +9,7 @@ export default function RoundedButton({theme,icon, role}) {
     return (
         <Pressable
             style={{
-                backgroundColor: theme?`rgba(253,237,237,0.42)`:`rgba(182,129,129,0.42)`,
+                backgroundColor: theme==="Dark"?`rgba(255,164,164,0.42)`:`rgba(255,193,193,0.42)`,
                 width: 60,
                 height: 60,
                 justifyContent: 'center',

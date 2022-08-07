@@ -2,12 +2,12 @@ import {Dimensions, Pressable, ScrollView, Text, View} from 'react-native';
 import React, {useRef, useState} from 'react';
 import { useStopwatch } from 'react-timer-hook';
 import useGlobalStyles from '../styles';
-import RoundedButton from '../components/button';
+import RoundedButton from '../components/roundedButton';
 import {useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Stopwatch({theme}) {
-    const style = useGlobalStyles()
+        const {colors}=useTheme();
     const {
         seconds,
         minutes,
@@ -50,11 +50,11 @@ export default function Stopwatch({theme}) {
             <Text
             style={{
                 ...timeStyle,
-                ...style.text,
+                color:colors.text,
             }}>
                 {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}
             </Text>
-            {(flags.length!==0)?? <Flags flags={flags} setFlags={setFlags}/>}
+            <Flags flags={flags} setFlags={setFlags}/>
             <View
                 style={{
                     flexDirection: 'row',
@@ -115,7 +115,7 @@ const Flags= ({setFlags,flags})=>{
             >
                 {flags.map((value,index)=>{
                     return (
-                        <Flag flag={value} index={index} remove={remove}/>
+                        <Flag key={index} flag={value} index={index} remove={remove}/>
                     )
                 })}
             </ScrollView>
